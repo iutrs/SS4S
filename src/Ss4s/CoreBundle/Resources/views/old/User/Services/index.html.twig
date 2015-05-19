@@ -1,0 +1,221 @@
+{% extends 'Ss4sCoreBundle::base.html.twig' %}
+
+{% block title %}
+	{{ parent() }} Services
+{% endblock %}
+
+{% block content %}
+	{% if services|length > 0 %}
+		{% for s in services %}
+			{% if loop.index0 is even %}
+			<div class="row">
+			{% endif %}
+			{# Affichage des services actifs #}
+			{% if s.status == 0 %}
+	    	<div class="col-lg-6">
+	    		{# Si l'utilisateur courant est administrateur, il peut éditer les services #}
+	    		{% if is_granted('ROLE_ADMIN') %}
+	    		<ul class="custom-admin-service-bar">
+	    			<li>
+	    				<a href="{{ path('ss4s_core_administrator_services_edit', { 'id' : s.id }) }}">
+	    					<span class="glyphicon glyphicon-edit custom-glyphicon-primary"></span>
+	    					Éditer les informations
+	    				</a>
+	    			</li>
+	    			<li>
+	    				<a href="{{ path('ss4s_core_administrator_services_parameters', { 'id' : s.id }) }}">
+	    					<span class="glyphicon glyphicon-edit custom-glyphicon-primary"></span>
+	    					Éditer les paramètres
+	    				</a>
+	    			</li>
+	    			<li>
+	    				<a class="custom-remove" href="{{ path('ss4s_core_administrator_services_delete', { 'id' : s.id }) }}">
+	    					<span class="glyphicon glyphicon-remove custom-glyphicon-danger"></span>
+	    					Supprimer
+	    				</a>
+	    			</li>
+	    			<li>
+	    				<a class="custom-maintain" href="{{ path('ss4s_core_administrator_services_disable', { 'id' : s.id }) }}">
+	    					<span class="glyphicon glyphicon-cog custom-glyphicon-warning"></span>
+	    					Mettre en développement
+	    				</a>
+	    			</li>
+					<li>
+						<a href="#" class="custom-rights" data-toggle="tooltup" data-original-title="{% if s.collegeGroups|length > 0 %}{% for collegeGroup in s.collegeGroups %}{{ collegeGroup.groupName }}{% if not loop.last %}, {% endif %}{% endfor %}{% else %}Aucun groupe n'a accès à ce service{% endif %}">
+							<span class="glyphicon glyphicon-eye-open custom-glyphicon-info"></span>
+							Droits
+						</a>
+					</li>
+	    		</ul>
+	    		{% endif %}
+				<a href="{{ path(s.serviceRoute, {'sid' : s.id}) }}" class="custom-service-link">
+					<div class="custom-service-item enabled">
+						<div class="custom-service-icon">
+							{% if s.imgPath is empty %}
+								<img src="{{ asset('images/icons/default_service_icon.png') }}" alt=""/>
+							{% else %}
+								<img src="{{ asset(s.imgPath) }}" alt=""/>
+							{% endif %}
+						</div>
+						<div class="custom-service-infos">
+							<h2>{{ s.name }}</h2>
+							<p>{{ s.description }}</p>
+							<p class="label label-success">En ligne</p>
+						</div>
+					</div>
+				</a>
+	    	</div>
+	    	{# Affichage des services en maintenance #}
+		    {% elseif s.status == 1 %}
+    		<div class="col-lg-6">
+	    		{# Si l'utilisateur courant est administrateur, il peut éditer les services #}
+	    		{% if is_granted('ROLE_ADMIN') %}
+	    		<ul class="custom-admin-service-bar">
+	    			<li>
+	    				<a href="{{ path('ss4s_core_administrator_services_edit', { 'id' : s.id }) }}">
+	    					<span class="glyphicon glyphicon-edit custom-glyphicon-primary"></span>
+	    					Éditer les informations
+	    				</a>
+	    			</li>
+	    			<li>
+	    				<a href="{{ path('ss4s_core_administrator_services_parameters', { 'id' : s.id }) }}">
+	    					<span class="glyphicon glyphicon-edit custom-glyphicon-primary"></span>
+	    					Éditer les paramètres
+	    				</a>
+	    			</li>
+	    			<li>
+	    				<a class="custom-remove" href="{{ path('ss4s_core_administrator_services_delete', { 'id' : s.id }) }}">
+	    					<span class="glyphicon glyphicon-remove custom-glyphicon-danger"></span>
+	    					Supprimer
+	    				</a>
+	    			</li>
+	    			<li>
+	    				<a class="custom-activate" href="{{ path('ss4s_core_administrator_services_enable', { 'id' : s.id }) }}">
+	    					<span class="glyphicon glyphicon-arrow-up custom-glyphicon-success"></span>
+	    					Mettre en ligne
+	    				</a>
+	    			</li>
+					<li>
+						<a href="#" class="custom-rights" data-toggle="tooltup" data-original-title="{% if s.collegeGroups|length > 0 %}{% for collegeGroup in s.collegeGroups %}{{ collegeGroup.groupName }}{% if not loop.last %}, {% endif %}{% endfor %}{% else %}Aucun groupe n'a accès à ce service{% endif %}">
+							<span class="glyphicon glyphicon-eye-open custom-glyphicon-info"></span>
+							Droits
+						</a>
+					</li>
+	    		</ul>
+	    		{% endif %}
+	    		{# A conserver pour faire fonctionner le ajax #}
+	    		<div class="custom-service-link">
+					<div class="custom-service-item disabled">
+						<div class="custom-service-icon">
+							{% if s.imgPath is empty %}
+								<img src="{{ asset('images/icons/default_service_icon.png') }}" alt=""/>
+							{% else %}
+								<img src="{{ asset(s.imgPath) }}" alt=""/>
+							{% endif %}
+						</div>
+						<div class="custom-service-infos">
+							<h2>{{ s.name }}</h2>
+							<p>{{ s.description }}</p>
+							<p class="label label-warning">En développement</p>
+						</div>
+					</div>
+				</div>
+    		</div>			    		
+	    	{% endif %}
+	    	{% if (loop.index0 is odd or loop.index0 == loop.length - 1) %}
+			</div>
+			{% endif %}
+    	{% endfor %}
+	{% else %}
+	<p>Il semblerait qu'aucun service n'est disponible</p>
+	{% endif %}
+	
+{% endblock %}
+
+{% block script %}
+	{{ parent() }}
+	{% if is_granted('ROLE_ADMIN') %}
+		<script>
+		$(document).ready(function() {
+			$('.rights-service-modal').click(function(){
+				var modal = createModal("Yolo", "Yo");
+				modal.modal();
+			});
+
+			$('.custom-remove').click(function(event){
+				event.preventDefault();
+				var serviceName = $(event.target.parentNode.parentNode.parentNode.querySelector('.custom-service-link > .custom-service-item > .custom-service-infos > h2')).html();
+				
+				var deleteForm = $('<form method="post" action="' + event.target + '"></form>');
+				var deleteButton = $('<input class="btn btn-success" type="submit" value="Oui">');
+				var cancelButton = $('<button class="btn btn-danger" data-dismiss="modal" aria-hidden="true">Non</button>');
+
+				deleteForm.append(deleteButton);
+
+				var modal = createModal(
+					'Supprimer le service "' + serviceName + '"', 
+					'Vous êtes sur le point de supprimer le service "' + serviceName + '" êtes vous sûr de vouloir continuer ?',
+					[cancelButton, deleteForm]
+				);
+				modal.modal();
+			});
+
+			$('.custom-maintain').click(function(event){
+				event.preventDefault();
+				var serviceName = $(event.target.parentNode.parentNode.parentNode.querySelector('.custom-service-link > .custom-service-item > .custom-service-infos > h2')).html();
+				
+				var validButton = $('<a class="btn btn-success" href="' + event.target + '">Oui</a>');
+				var cancelButton = $('<button class="btn btn-danger" data-dismiss="modal" aria-hidden="true">Non</button>');
+
+				var modal = createModal(
+					'Mettre en développement le service "' + serviceName + '"', 
+					'Vous êtes sur le point de mettre en développement le service "' + serviceName + '", cette action rendra le service invisible et indisponible pour les utilisateurs. Êtes vous sûr de vouloir continuer ?',
+					[cancelButton, validButton]
+				);
+				modal.modal();
+			});
+
+			$('.custom-activate').click(function(event){
+				event.preventDefault();
+				var serviceName = $(event.target.parentNode.parentNode.parentNode.querySelector('.custom-service-link > .custom-service-item > .custom-service-infos > h2')).html();
+				
+				var validButton = $('<a class="btn btn-success" href="' + event.target + '">Oui</a>');
+				var cancelButton = $('<button class="btn btn-danger" data-dismiss="modal" aria-hidden="true">Non</button>');
+
+				var modal = createModal(
+					'Mettre en ligne le service "' + serviceName + '"', 
+					'Vous êtes sur le point de mettre en ligne le service "' + serviceName + '", cette action rendra le service visible et disponible pour les utilisateurs. Êtes vous sûr de vouloir continuer ?',
+					[cancelButton, validButton]
+				);
+				modal.modal();
+			});
+
+			$('a.custom-rights').tooltip({placement: 'bottom', html: true});
+		});
+
+		function createModal(title, content, footer) {
+			var modal = $('<div class="modal fade" tabindex="-1" role="dialog"></div>');
+			var modalDialog = $('<div class="modal-dialog"></div>');
+			var modalContent = $('<div class="modal-content"></div>');
+			var modalHeader = $('<div class="modal-header"></div>');
+			var modalClose = $('<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>');
+			var modalTitle = $('<h4 class="modal-title"></h4>');
+			var modalBody = $('<div class="modal-body"></div>');
+			var modalFooter = $('<div class="modal-footer"></div>');
+
+			modalTitle.append(title);
+			modalBody.append(content);
+			modalFooter.append(footer);
+			modalHeader.append(modalClose);
+			modalHeader.append(modalTitle);
+			modalContent.append(modalHeader);
+			modalContent.append(modalBody);
+			modalContent.append(modalFooter);
+			modalDialog.append(modalContent);
+			modal.append(modalDialog);
+
+			return modal;
+		}
+		</script>
+	{% endif %}
+{% endblock %}

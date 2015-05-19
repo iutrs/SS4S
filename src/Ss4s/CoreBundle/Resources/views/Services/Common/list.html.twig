@@ -1,0 +1,22 @@
+{% trans_default_domain 'ss4s_core' %}
+{% extends 'Ss4sCoreBundle::base.html.twig' %}
+{% block content %}
+	{% if services is empty %}
+		{% trans %}
+			No service available.
+		{% endtrans %}
+		{% if is_granted(admin_role) %}
+			{% trans %}
+				Would you like to <a href="#">add one</a> ?
+			{% endtrans %}
+		{% endif %}
+	{% else %}
+		{% for service in services %}
+			{% include 'Ss4sCoreBundle:Services/Common:serviceTile.html.twig' with {
+				service_name: service.name,
+				service_description: service.description,
+				service_status: service.status
+			} %}
+		{% endfor %}
+	{% endif %}
+{% endblock %}

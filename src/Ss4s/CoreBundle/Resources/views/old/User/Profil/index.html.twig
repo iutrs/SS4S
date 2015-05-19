@@ -1,0 +1,32 @@
+{% extends '::base.html.twig' %}
+
+{% block title %}
+  {{ parent() }} Profil
+{% endblock %}
+
+{% block content %}
+      <div class="custom-module">
+        <div class="custom-module-header">
+          <div class="custom-mini-icon">
+            <span class="glyphicon glyphicon-user"></span>
+          </div>
+          <h3>
+            Mes Groupes
+          </h3>
+        </div>
+        <div class="custom-inner">
+          <div class="well">
+            {% for g in groups %}
+            {% if loop.index0 % 4 == 0 %}
+            <div class="row">
+            {% endif %}
+              <div class="col-lg-3 custom-profil-groups">
+                <p>{{ g }}</p>
+              </div>
+            {% if loop.index0 % 4 == 3 or loop.last %}
+            </div>
+            {% endif %}
+            {% endfor %}
+          </div>
+        </div>
+{% endblock %}

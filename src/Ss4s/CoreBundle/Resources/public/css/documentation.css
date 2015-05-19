@@ -1,0 +1,71 @@
+ul.nav-tabs{
+    width: 210px;
+    margin-top: 20px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.067);
+}
+
+#custom-doc-tab {
+    width: 100%;
+}
+
+ul.nav-tabs li {
+    list-style: none;
+}
+
+.nav-stacked > li > ul,
+.nav-stacked > li > ul > li {
+    list-style: none !important;
+    padding: 0 !important;
+    display: block !important;
+    overflow: hidden;
+}
+
+.nav-stacked > li > ul > li > a {
+    display: block;
+}
+
+ul.nav-tabs li a{
+    padding: 8px 16px;
+}
+
+.nav-tabs>li.active>a, .nav-tabs>li.active>a:hover, .nav-tabs>li.active>a:focus {
+	color: #fff;
+    background: #202E3B;
+    border: 1px solid #202E3B;
+}
+
+.nav-tabs>li>a {
+	margin-right: 0;
+}
+
+ul.nav li ul {
+	margin-left: 30px;
+	width: 180px;
+	margin-right: 1px;
+}
+
+ul.nav li.active ul li.active a, ul.nav li.active ul li.active a:hover {
+    color: #fff;
+    background: #202E3B;
+    border: 1px solid #202E3B;
+}
+
+.nav-tabs.affix{
+    top: 30px; /* Set the top position of pinned element */
+}
+
+h1 {
+    margin: 40px 0;
+}
+
+h2 {
+    padding: 10px 0;
+}
+
+section p {
+    font-size: 12pt;
+}
+
+.headerlink {
+    display: none;
+}

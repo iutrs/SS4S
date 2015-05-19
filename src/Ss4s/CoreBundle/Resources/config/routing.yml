@@ -1,0 +1,28 @@
+#================================================================#
+# Common
+#================================================================#
+
+ss4s_core_logout:
+    pattern: /logout
+
+ss4s_core_user_services_login:
+    pattern:  /login
+    defaults: { _controller: Ss4sCoreBundle:User\Services:index }
+
+
+
+#================================================================#
+# Services
+#================================================================#
+
+ss4s_core_services_common_list:
+    pattern: /
+    defaults: { _controller: Ss4sCoreBundle:Services\Common:list }
+
+#================================================================#
+# JSON
+#================================================================#
+
+ss4s_core_services_common_get_all_json:
+    pattern: /json/services/common/get_all/
+    defaults: { _controller: Ss4sCoreBundle:Services\Common:getAllJson }

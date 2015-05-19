@@ -1,0 +1,49 @@
+{% for form_field in form_fields %}
+
+    {% if form_field.vars.block_prefixes.1 != 'hidden' %}
+
+        <div class="form-group">
+
+        {% if form_field.vars.block_prefixes.1 == 'text' %}
+
+            {% if wrap_classes is defined %}
+            <div class="{{ wrap_classes }}">
+            {% endif %}
+
+                {{ form_label(form_field, null, {'label_attr': {'class': label_classes }}) }}
+                {% if input_wrap_classes is defined %}
+                <div class="{{ input_wrap_classes }}">
+                {% endif %}
+                    {{ form_errors(form_field, { 'attr' : { 'class' : 'alert alert-danger' }} ) }}
+                    {{ form_widget(form_field, {'attr': {'class': input_classes }}) }}
+                {% if input_wrap_classes is defined %}
+                </div>
+                {% endif %}
+
+            {% if wrap_classes is defined %}
+            </div>
+            {% endif %}
+
+        {% elseif form_field.vars.block_prefixes.1 == 'submit' %}
+
+            {% if submit_wrap_classes is defined %}
+            <div class="{{ submit_wrap_classes }}">
+            {% endif %}
+
+                {{ form_widget(form_field, { 'attr' : { 'class' : submit_classes }} ) }}
+
+            {% if submit_wrap_classes is defined %}
+            </div>
+            {% endif %}
+
+        {% endif %}
+
+    </div>
+
+    {% else %}
+
+        {{ form_widget(form_field) }}
+
+    {% endif %}
+
+{% endfor %}

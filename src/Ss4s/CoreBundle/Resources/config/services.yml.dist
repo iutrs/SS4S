@@ -1,0 +1,75 @@
+parameters:
+    # Evènement qui détermine l'accès au service 
+    ss4s.service_access.action_listener.class: Ss4s\CoreBundle\EventListener\ServiceAccessListener
+
+    # Fournisseur d'utilisateurs 
+    ss4s.user_provider.class: Ss4s\CoreBundle\Security\Ss4sUserProvider
+
+    # Services
+    ss4s.plugins_finder.class: Ss4s\CoreBundle\Service\PluginsFinder
+    ss4s.current_service.class: Ss4s\CoreBundle\Service\CurrentService
+    ss4s.ldap_check.class: Ss4s\CoreBundle\Service\LDAPCheck
+    ss4s.administrator_check.class: Ss4s\CoreBundle\Service\AdministratorCheck
+
+    # Formulaires 
+    form.type.servicepath.class: Ss4s\CoreBundle\Form\Administrator\ServicePathType
+
+    # Logs
+    ss4s.logs.class: Ss4s\CoreBundle\Service\Ss4sLogs
+    monolog.formatter.ss4s_logs.class: Monolog\Formatter\LineFormatter
+    monolog.processor.ss4s_logs.class: Ss4s\CoreBundle\Service\Ss4sLogProcessor
+
+services:
+    # Evènement qui détermine l'accès au service 
+    ss4s.service_access.action_listener:
+        class: %ss4s.service_access.action_listener.class%
+        arguments: ['@security.context', '@router', '@doctrine', '@service_container']
+        tags:
+            - { name: kernel.event_listener, event: kernel.controller, method: onKernelController }
+            - { name: kernel.event_listener, event: kernel.response, method: onKernelResponse }
+
+    # Fournisseur d'utilisateurs 
+    ss4s.user_provider:
+        class: "%ss4s.user_provider.class%"
+        arguments: ['@service_container']
+
+    # Services 
+    ss4s.plugins_finder:
+        class: %ss4s.plugins_finder.class%
+        arguments: ['%kernel.root_dir%/../src/Ss4s/Plugins', '@doctrine']
+
+    ss4s.current_service:
+        class: %ss4s.current_service.class%
+        arguments: ['@doctrine', '@service_container']
+
+    ss4s.ldap_check:
+        class: "%ss4s.ldap_check.class%"
+        arguments: ['DC.ACTIVE.DIRECTORY', 'LOGIN@ACTIVE.DIRECTORY', 'PASSWORD']
+
+    ss4s.administrator_check:
+        class: "%ss4s.administrator_check.class%"
+        arguments: ['@doctrine']
+
+    # Formulaires
+    form.type.servicepath:
+        class: %form.type.servicepath.class%
+        arguments: ['@ss4s.plugins_finder']
+        tags:
+            - { name: form.type, alias: servicepath }
+
+    # Logs
+    ss4s.logs:
+        class: %ss4s.logs.class%
+        arguments: ['@logger']
+        tags: 
+            - { name: monolog.logger, channel: ss4sloginout }
+
+    monolog.formatter.ss4s_logs:
+        class: %monolog.formatter.ss4s_logs.class%
+        arguments:
+            - "%%datetime%% - %%message%% ² "
+
+    monolog.processor.ss4s_logs:
+        class: %monolog.processor.ss4s_logs.class%
+        tags:
+            - { name: monolog.processor, method: processRecord }

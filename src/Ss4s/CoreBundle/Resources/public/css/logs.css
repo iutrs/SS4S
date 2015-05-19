@@ -1,0 +1,26 @@
+.loader {
+	text-align: center;
+}
+
+.custom-control {
+	width: 80px;
+}
+
+.custom-center {
+	width: 60%;
+	margin: auto;
+}
+
+.form-group {
+	width: 100% !important;
+	margin-bottom: 10px !important;
+}
+
+.form-group > *,
+.form-group > * > * {
+	display: inline-block;
+}
+
+label {
+	padding: 7px 15px;
+}

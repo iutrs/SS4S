@@ -1,0 +1,20 @@
+{% set supported_attr = ['id', 'role'] %}
+{% set supported_tags = ['a', 'button'] %}
+{% set tag_attr = '' %}
+{% set href_attr = '' %}
+
+{% for attr_name, attr_val in attr %}
+    {% if attr_name in supported_attr %}
+        {% set tag_attr = tag_attr ~ ' ' ~ attr_name ~ '="' ~ attr_val ~ '"' %}
+    {% endif %}
+{% endfor %}
+
+{% if path_params is defined %}
+    {% set href_attr = path(path, path_params) %}
+{% else %}
+    {% set href_attr = path(path) %}
+{% endif %}
+
+{% if tag in supported_tags %}
+    <{{ tag }}{{ tag_attr }} href="{{ href_attr }}" class="btn {% if attr.class is defined %}{{ attr.class }}{% endif %}">{{ title }}</{{ tag }}>
+{% endif %}

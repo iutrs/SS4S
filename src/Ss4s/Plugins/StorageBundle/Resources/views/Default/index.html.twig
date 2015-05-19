@@ -1,0 +1,26 @@
+{% extends '::base.html.twig' %}
+
+{% block title %}
+	{{ parent() }} Stockage
+{% endblock %}
+
+{% block content %}
+	<div class="custom-service-header">
+		<h2>Service de stockage</h2>
+	</div>
+	<div class="custom-module">
+		<div class="custom-module-header">
+			<h3>
+				Créer un espace de stockage
+			</h3>
+		</div>
+		<div class="well">
+			{% if folder == true %}
+				<a href="{{ path('Ss4sPluginsStorageBundle_create', {'sid' : app.request.get('sid')}) }}" class="btn btn-success">Créer espace de stockage</a>
+			{% else %}
+				<a href="#" class="btn btn-primary disabled">Espace de stockage déjà créé</a>
+				<a href="{{ path('Ss4sPluginsStorageBundle_delete', {'sid' : app.request.get('sid')}) }}" class="btn btn-danger">Supprimer espace de stockage</a>
+    		{% endif %}
+    	</div>
+	</div>
+{% endblock %}

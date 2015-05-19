@@ -1,0 +1,40 @@
+{% trans_default_domain 'ss4s' %}
+<nav class="navbar navbar-ss4s" role="navigation">
+    <div class="container">
+        <div class="nav-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#ss4s-main-navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+        <a href="{{ path('ss4s_core_services_common_list') }}" class="navbar-brand-ss4s">ss4s</a>
+    </div>
+    <div class="collapse navbar-collapse" id="ss4s-main-navbar-collapse">
+        <ul class="nav navbar-nav navbar-right">
+            {% include 'Ss4sCoreBundle:Service:serviceLinks.html.twig' %}
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Administrate <span class="caret"></span></a>
+              <ul class="dropdown-menu dropdown-menu-left" role="menu">
+                <li role="presentation" class="dropdown-header">
+                    Services
+                </li>
+                <li><a href="{{ path('ss4s_core_administrator_services_add') }}">Add service</a></li>
+                <li class="divider"></li>
+                <li role="presentation" class="dropdown-header">
+                    Administrators
+                </li>
+                <li><a href="#">Manage Admins</a></li>
+                <li class="divider"></li>
+                <li role="presentation" class="dropdown-header">
+                    History
+                </li>
+                <li><a href="#">Whole history</a></li>
+              </ul>
+            </li>
+            <li><a href="#">{% trans %}Services{% endtrans %}</a></li>
+            <li><a href="#">{% trans %}Help{% endtrans %}</a></li>
+            {% include 'Ss4sCoreBundle:Common:loggedInLinks.html.twig' %}
+        </ul>
+    </div>
+</nav>

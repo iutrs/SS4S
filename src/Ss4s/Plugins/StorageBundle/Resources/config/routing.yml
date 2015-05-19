@@ -1,0 +1,13 @@
+Ss4sPluginsStorageBundle_index:
+    pattern:  /{sid}
+    defaults: { _controller: Ss4sPluginsStorageBundle:Storage:index }
+    requirements:
+        sid: \d+
+
+Ss4sPluginsStorageBundle_create:
+    pattern:  /{sid}/create/
+    defaults: { _controller: Ss4sPluginsStorageBundle:Storage:create }
+
+Ss4sPluginsStorageBundle_delete:
+    pattern:  /{sid}/delete/
+    defaults: { _controller: Ss4sPluginsStorageBundle:Storage:delete }

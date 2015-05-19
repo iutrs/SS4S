@@ -1,0 +1,78 @@
+<script>
+	jQuery(document).ready(function() {
+		var $colGrps = $('.collegeGroups');
+
+		addAdd($colGrps);
+
+		$('#service_name').focus();
+
+		$colGrps.find('li').each(function() {
+			if(!$(this).children().hasClass('add_collegegroup')) {
+				$(this).addClass('custom-not-editable');
+				addRm($(this), $colGrps);
+			}
+		});
+	});
+
+	function addColGrpForm($addColGrp, $colGrps) {
+		var prototype = $colGrps.attr('data-prototype');
+
+		var newForm = prototype.replace(/__name__/g, $colGrps.children().length);
+
+		$addLi = $addColGrp.parent();
+		$addLi.empty();
+
+		$addLi.append(($('<li></li>').addClass('custom-editable')).append(newForm));
+
+		$input = $('.custom-editable').find('input');
+		$input.attr('placeholder', 'Tag du groupe');
+		$input.bind({
+			focusout: function(e) {
+				$input = $(e.target);
+				addRm($input.parent().parent().parent(), $colGrps);
+				$edit = $input.parent().parent().parent();
+				$input.attr('readonly', 'true');
+				$edit.removeClass('custom-editable');
+				$edit.addClass('custom-not-editable');
+				$input.addClass('custom-tag');
+
+				if($input.val() == '') {
+					$edit.parent().remove();
+				}
+
+				$input.css('width', 'auto');
+
+				addAdd($colGrps);
+			}
+		});
+		$input.focus();
+	}
+
+	function addAdd($colGrps) {
+		$colGrps.find('.add_collegegroup').parent().remove();
+		var $addIcon = $('<span class="glyphicon glyphicon-plus"></span>');
+		var $addColGrp = $('<button class="add_collegegroup btn btn-primary"> Ajouter un groupe</button>');
+		$addColGrp.prepend($addIcon);
+		$colGrps.append($('<li></li>').append($addColGrp));
+		$addColGrp.bind({
+			click: function(e) {
+				e.preventDefault();
+				$(this).hide();
+				addColGrpForm($(this), $colGrps);
+			}
+		});
+	}
+
+	function addRm($input, $colGrps) {
+		$rmButton = $('<button></button>').addClass('custom-rm-btn glyphicon custom-glyphicon-danger glyphicon-remove');
+		$rmButton.bind({
+			click: function(e) {
+				e.preventDefault();
+				$(e.target).closest('.custom-not-editable').remove();
+				addAdd($colGrps);
+			}
+		});
+		$input.find('button').remove();
+		$input.append($rmButton);
+	}
+</script>

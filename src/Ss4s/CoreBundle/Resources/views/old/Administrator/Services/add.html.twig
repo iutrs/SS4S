@@ -1,0 +1,13 @@
+{# {% set angular_module = 'administrator' %} #}
+{% extends 'Ss4sCoreBundle::base.html.twig' %}
+
+{% block content %}
+	<div ng-controller="servicesCtrl">
+		{% include 'Ss4sCoreBundle:Administrator/Services:addPanel.html.twig' %}
+	</div>
+{% endblock %}
+
+{# Will be removed when Angular App will have been written #}
+{% block script %}
+	{% include 'Ss4sCoreBundle:Administrator/Services:serviceScript.html.twig' %}
+{% endblock %}

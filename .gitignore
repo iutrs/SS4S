@@ -1,0 +1,9 @@
+web/bundles/
+app/bootstrap*
+app/cache/*
+app/logs/*
+vendor/
+app/config/parameters.yml
+src/Ss4s/Plugins/MySQLBundle/Resources/config/args.yml
+src/Ss4s/Plugins/StorageBundle/Resources/config/args.yml
+.idea/

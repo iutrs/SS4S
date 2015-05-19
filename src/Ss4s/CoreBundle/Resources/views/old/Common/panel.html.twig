@@ -1,0 +1,11 @@
+<div class="panel panel-ss4s">
+    <div class="panel-heading">
+        <h3 class="panel-title">
+            {% if panel_glyphicon is defined %}
+                <span class="glyphicon {{ panel_glyphicon }}"></span> 
+            {% endif %}
+            {% block panel_title %}{% endblock %}
+        </h3>
+    </div>
+    {% block panel_content %}{% endblock %}
+</div>

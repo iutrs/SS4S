@@ -1,0 +1,29 @@
+{% extends 'Ss4sCoreBundle:Common:panel.html.twig' %}
+
+{% set panel_glyphicon = 'glyphicon-heart' %}
+
+{% block panel_title %}
+    {% trans %}The tools{% endtrans %}
+{% endblock %}
+
+{% block panel_content %}
+    <div class="panel-body">
+      <div class="row custom-credits">
+        <div class="col-lg-4">
+          <a href="http://symfony.com/">
+            <img src="{{ asset('bundles/ss4score/images/user/credits/symfony.png') }}" alt="Symfony">
+          </a>
+        </div>
+        <div class="col-lg-4">
+          <a href="http://glyphicons.com/">
+            <img class="custom-big" src="{{ asset('bundles/ss4score/images/user/credits/glyphicons.svg') }}" alt="Glyphicons">
+          </a>
+        </div>
+        <div class="col-lg-4">
+          <a href="http://getbootstrap.com/">
+            <img src="{{ asset('bundles/ss4score/images/user/credits/bootstrap.png') }}" alt="Bootstrap">
+          </a>
+        </div>
+      </div>
+    </div>
+{% endblock %}

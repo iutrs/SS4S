@@ -1,0 +1,34 @@
+{% extends "Ss4sCoreBundle::base.html.twig" %}
+
+{% block title %}
+SS4S - Bienvenue
+{% endblock %}
+
+{% block body %}
+    {# Navigation #}
+    <header class="navbar navbar-custom navbar-static-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand custom-navbar-brand" href="{{ manager.server.loginUrl }}"><img src="{{ asset('images/logo.png') }}" alt=""/></a>
+            </div>
+            <div class="collapse navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a class="btn-success" href="{{ manager.server.loginUrl }}"><span class="custom-icon custom-icon-connect"></span>Connexion</a></li>
+                </ul>
+            </div>
+        </div>
+    </header>
+
+    {# Section #}
+    <section class="container">
+		<div class="custom-top-home">
+			<h1>Bienvenue sur SS4S</h1>
+			<p>Cette nouvelle interface vous permettra en quelques clics de créer votre propre base de données et de la gérer, mais elle vous permettra également d'accéder à votre espace de stockage de façon simple et intuitive. Bonne visite !</p>
+		</div>
+	</section>
+{% endblock %}

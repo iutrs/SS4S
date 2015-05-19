@@ -1,0 +1,7 @@
+parameters:
+    ss4s_plugins_storage.storage_service.class: Ss4s\Plugins\StorageBundle\Service\StorageService
+
+services:
+    ss4s_plugins_storage.storage_service:
+        class: "%ss4s_plugins_storage.storage_service.class%"
+        arguments: []

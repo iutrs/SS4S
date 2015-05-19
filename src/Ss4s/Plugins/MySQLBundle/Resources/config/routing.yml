@@ -1,0 +1,18 @@
+ss4s_plugins_mysql_index:
+     pattern: /{sid}
+     defaults: { _controller: Ss4sPluginsMySQLBundle:MySQL:index }
+     requirements:
+         sid: \d+
+
+ss4s_plugins_mysql_delete:
+     pattern: /delete/{sid}/{id}
+     defaults: { _controller: Ss4sPluginsMySQLBundle:MySQL:delete }
+     requirements:
+         sid: \d+
+         id: \d+
+
+ss4s_plugins_mysql_forgotten:
+    pattern: /forgotten/{sid}
+    defaults: { _controller: Ss4sPluginsMySQLBundle:MySQL:forgotten }
+    requirements:
+        sid: \d+

@@ -1,0 +1,2 @@
+ss4s_core_routes:
+    resource: @Ss4sCoreBundle/Resources/config/routing.yml

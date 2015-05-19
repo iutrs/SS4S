@@ -1,0 +1,60 @@
+{% extends 'Ss4sCoreBundle:Common:panel.html.twig' %}
+
+{% block panel_content %}
+<div class="panel-body">
+	<form role="form" class="form-horizontal" method="post" {{ form_enctype(form) }}>
+		{{ form_start(form) }}
+		<div class="form-group">
+			{{ form_label(form.name, 'Nom', {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
+			<div class="col-sm-10">
+				{{ form_errors(form.name) }}
+				{{ form_widget(form.name, {'attr': {'class': 'form-control'}}) }}
+			</div>
+		</div>
+		<div class="form-group">
+			{{ form_label(form.description, 'Description', {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
+			<div class="col-sm-10">
+				{{ form_errors(form.description) }}
+				{{ form_widget(form.description, { 'attr': {'class': 'form-control'}}) }}
+			</div>
+		</div>
+		<div class="form-group">
+			{{ form_label(form.servicePath, 'Plugin', {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
+			<div class="col-sm-10">
+				{{ form_errors(form.servicePath) }}
+				{{ form_widget(form.servicePath, { 'attr': {'class': 'form-control'}}) }}
+			</div>
+		</div>
+		<div class="form-group">
+			{{ form_label(form.status, 'Statut', {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
+			<div class="col-sm-10">
+				{{ form_errors(form.status) }}
+				{{ form_widget(form.status, { 'attr': {'class': 'form-control'}}) }}
+			</div>
+		</div>
+		<div class="form-group">
+			{{ form_label(form.imgPath, 'URL de l\'image', {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
+			<div class="col-sm-10">
+				{{ form_errors(form.imgPath) }}
+				{{ form_widget(form.imgPath, { 'attr': {'class': 'form-control'}}) }}
+			</div>
+		</div>
+		<div class="form-group custom-college-groups">
+			{{ form_label(form.collegeGroups, 'Groupes', {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
+			<div class="col-sm-10">
+				<ul class="collegeGroups" data-prototype="{{ form_widget(form.collegeGroups.vars.prototype)|e }}">
+					{% for collegeGroup in form.collegeGroups %}
+					<li>{{ form_widget(collegeGroup.groupName) }}</li>
+					{% endfor %}
+				</ul>
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-sm-offset-2 col-sm-10">
+				<input type="submit" class="btn btn-success">
+			</div>
+		</div>
+		{{ form_end(form) }}
+	</form>
+</div>
+{% endblock %}

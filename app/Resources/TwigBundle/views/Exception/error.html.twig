@@ -1,0 +1,14 @@
+{% if app.security.getToken() is defined %}
+    {% extends '::base.html.twig' %}
+{% else %}
+    {% extends '::base_not_logged_in.html.twig' %}
+{% endif %}
+
+{% block title %}
+SS4S - Erreur - {{ status_code }} {{ status_text }}
+{% endblock %}
+
+{% block body %}
+        <h1>Une erreur est survenue ({{ status_code }} {{ status_text }})</h1>
+        <p class="custom-error">Nous sommes désolé de la gêne occasionnée, nous travaillons actuellement à la résolution du problème.</p>
+{% endblock %}

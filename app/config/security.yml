@@ -1,0 +1,66 @@
+# security:
+#     providers:
+#         in_memory:
+#             memory: ~
+
+#     firewalls:
+#         dev:
+#             pattern: ^/(_(profiler|wdt)|css|images|js)/
+#             security: false
+
+#         default:
+#             anonymous: ~
+
+security:
+    encoders:
+        Symfony\Component\Security\Core\User\User: plaintext
+
+    role_hierarchy:
+        ROLE_ADMIN: ROLE_USER
+        ROLE_SUPERADMIN: [ ROLE_USER, ROLE_ADMIN ]
+        ROLE_FATHER_OF_ALL: [ ROLE_USER, ROLE_ADMIN, ROLE_SUPERADMIN ]
+
+    providers:
+        ss4s_users:
+           id: ss4s.user_provider
+
+    firewalls:
+        dev:
+            pattern: ^/(_profiler|_wdt|css|js)
+            security: false
+        ss4s_firewall:
+            pattern: ^/
+            trusted_sso:
+                manager: user_sso
+                login_action: BeSimpleSsoAuthBundle:TrustedSso:login
+                logout_action: BeSimpleSsoAuthBundle:TrustedSso:logout
+                create_users: false
+                check_path: /
+            logout:
+                path:   /logout
+                target: /
+            anonymous: ~
+
+
+    access_control:
+        - { path: ^/admin/, roles: ROLE_ADMIN }
+        - { path: ^/administration/administrateurs/revoquer-super-admin, roles: ROLE_FATHER_OF_ALL }
+        - { path: ^/administration/administrateurs, roles: ROLE_SUPERADMIN }
+        - { path: ^/administration, roles: ROLE_ADMIN }
+        - { path: ^/, roles: ROLE_USER }
+        - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+
+
+    providers:
+        in_memory:
+             memory:
+                users:
+                    test_admin:  { password: test, roles: 'ROLE_ADMIN' }
+
+    encoders:
+        Symfony\Component\Security\Core\User\User: plaintext
+
+parameters:
+    super_admin_role: 'ROLE_SUPER_ADMIN'
+    admin_role: 'ROLE_ADMIN'
+    user_role: 'ROLE_USER'

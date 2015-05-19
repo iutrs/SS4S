@@ -1,0 +1,156 @@
+{% extends 'Ss4sCoreBundle::base.html.twig' %}
+
+{% block title %}
+    {{ parent() }} Logs
+{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('bundles/ss4score/css/logs.css') }}">
+{% endblock %}
+
+{% block content %}
+    {% if search_form is defined %}
+    <div class="custom-module">
+        <div class="custom-module-header">
+            <div class="custom-mini-icon">
+                <span class="glyphicon glyphicon-search"></span>
+            </div>
+            <h3>Recherche par période</h3>
+        </div>
+        <div class="well">
+            <form class="form-inline" method="post" id="search_log">
+				{{ form_start(search_form) }}
+                <div class="custom-center">
+    				<div class="form-group">
+    					{{ form_label(search_form.begin, 'Date de début', {'label_attr': {'class': 'col-sm-3 control-label'}}) }}
+    					{{ form_errors(search_form.begin) }}
+    					{{ form_widget(search_form.begin) }}
+    				</div>
+    				<div class="form-group">
+    					{{ form_label(search_form.end, 'Date de fin', {'label_attr': {'class': 'col-sm-3 control-label'}}) }}
+    					{{ form_errors(search_form.end) }}
+    					{{ form_widget(search_form.end) }}
+    				</div>
+                    <div class="form-group">
+                        <div class="col-sm-offset-3 col-sm-10">
+                            <input type="submit" class="btn btn-success">
+                        </div>
+                    </div>
+                </div>
+				{{ form_end(search_form) }}
+            </form>
+        </div>
+    </div>
+    {% endif %}
+    <div class="custom-module">
+        <div class="custom-module-header">
+            <div class="custom-mini-icon">
+                <span class="glyphicon glyphicon-log-in"></span>
+            </div>
+            <h3>Connexions et déconnexions</h3>
+        </div>
+        <div class="well">
+            {% if logs is defined %}
+        	<table class="table" id="logs">
+		      <tbody>
+            	{% for log in logs %}
+                    {% if log != ' ' %}
+		              <tr>
+    		            <td>{{ log }}</td>
+    		          </tr>
+                    {% endif %}
+		        {% endfor %}
+		    </table>
+            {% else %}
+            <p>Aucun utilisateur ne s'est connecté ou déconnecté pour le moment</p>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
+
+{% block script %}
+    <script>
+    inputs = [];
+
+    $beginDate = $('#form_begin_date').children();
+    $beginTime = $('#form_begin_time').children();
+    $endDate = $('#form_end_date').children();
+    $endTime = $('#form_end_time').children();
+    for(var i = 0; i < $beginDate.length; i++) {
+        inputs.push($beginDate[i]);
+    }
+    for(var i = 0; i < $beginTime.length; i++) {
+        inputs.push($beginTime[i]);
+    }
+    for(var i = 0; i < $endDate.length; i++) {
+        inputs.push($endDate[i]);
+    }
+    for(var i = 0; i < $endTime.length; i++) {
+        inputs.push($endTime[i]);
+    }
+
+    for(var i =0; i < inputs.length; i++) {
+        $(inputs[i]).each(function(){
+            $(this).data('last', $(this).val());
+        });
+        $(inputs[i]).addClass('form-control custom-control');
+        $(inputs[i]).bind({
+            change: function(e) {
+                bDate = new Date(
+                    $beginDate.eq(2).val(),
+                    $beginDate.eq(0).val(),
+                    $beginDate.eq(1).val(),
+                    $beginTime.eq(0).val(),
+                    $beginTime.eq(1).val(),
+                    0,0
+                );
+
+                eDate = new Date(
+                    $endDate.eq(2).val(),
+                    $endDate.eq(0).val(),
+                    $endDate.eq(1).val(),
+                    $endTime.eq(0).val(),
+                    $endTime.eq(1).val(),
+                    0,0
+                );
+
+                if(Date.parse(bDate) > Date.parse(eDate)) {
+                    alert('La date de début ne peut être supérieure à la date de fin');
+                    $(e.target).val($(e.target).data()['last']);
+                } else {
+                    $(e.target).data('last', $(e.target).val());
+                }
+            }
+        });
+    }
+
+    $('#search_log').bind({
+        submit: function(e) {
+            e.preventDefault();
+            appendLoader();
+            $.post('{{ path('ss4s_core_administrator_logs_index') }}', $(e.target).serialize(), function(data) {
+                setNewData(data);
+            }, 'json');
+        }
+    });
+
+    function appendLoader() {
+        $loader = $('<tr><td class="loader"><img src="{{ asset('images/loader/ajax-loader-well.gif')}}" alt="loader"></td></tr>');
+        $logs = $('#logs > tbody');
+        $logs.empty();
+        $logs.append($loader);
+    }
+
+    function setNewData(data) {
+        $logs = $('#logs > tbody');
+        $logs.empty();
+        if(data == ' ') {
+            $logs.append($('<tr><td>Aucune connexion ou déconnexion n\'a été enregistrée dans cette période</td></tr>'));
+        } else {
+            for(var i = 1; i < data.length; i++) {
+                $logs.append($('<tr><td>' + data[i] + '</td></tr>'));
+            }
+        }
+    }
+    </script>
+{% endblock %}

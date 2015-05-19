@@ -1,0 +1,23 @@
+"1":
+    title: Créer une base
+    content: >
+        Pour créer une base, il faut remplir le champ de texte avec le nom souhaité et cliquer sur "Créer". La base sera créée, et s'affichera désormais dans la liste
+        située juste en dessous de la zone de création.
+
+"2":
+    title: Supprimer une base
+    content: >
+        Pour supprimer une base, il suffit de cliquer sur le bouton "Supprimer" situé à côté de la base que vous désirez supprimer.
+
+"3":
+    title: PHPMyAdmin
+    content: >
+        PHPMyAdmin est une application permettant la gestion de base de données sans pour autant avoir de connaissances particulières en langage SQL.
+        Pour aller sur PHPMyAdmin cliquer sur "Lien vers PHPMyAdmin".
+
+"4":
+    title: Mot de passe PHPMyAdmin oublié
+    content: >
+        Si vous avez oublié votre mot de passe PHPMyAdmin, il suffit simplement de cliquer sur "Mot de passe phpMyAdmin oublié" pour voir apparaître en dessous de la barre
+        de navigation.
+        Ne marche que si vous avez une base de données déjà créée.

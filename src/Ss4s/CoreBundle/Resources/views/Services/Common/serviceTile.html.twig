@@ -1,0 +1,29 @@
+{% trans_default_domain 'ss4s_core' %}
+<div class="tile-ss4s col-sm-6">
+	{# The admin toolbar allows the administrator to easily edit as service #}
+	{% if is_granted(admin_role) %}
+		<div class="tool-bar-ss4s">
+			<a href="#" class="btn btn-warning">{% trans %}Modify{% endtrans %}</a>
+			<a href="#" class="btn btn-danger">{% trans %}Delete{% endtrans %}</a>
+		</div>
+	{% endif %}
+	<div class="col-sm-6">
+
+	</div>
+	<div class="col-sm-6">
+		<h3>{{ service_name }}</h3>
+		<p>{{ service_description }}</p>
+		{# Only the administrators will be able to see the status of the service #}
+		{% if is_granted(admin_role) %}
+			{% if service_status == 0 %}
+				<p>{% trans %}Status:{% endtrans %} <span class="active-ss4s">{% trans %}Active{% endtrans %}</span></p>
+			{% else %}
+				<p>{% trans %}Status:{% endtrans %} <span class="inactive-ss4s">{% trans %}Inactive{% endtrans %}</span></p>
+			{% endif %}
+		{% endif %}
+	</div>
+	<div class="clearfix"></div>
+	<div class="tool-bar-ss4s">
+		<a href="#" class="btn btn-primary pull-right">{% trans %}Use service{% endtrans %}</a>
+	</div>
+</div>

@@ -1,0 +1,182 @@
+{% extends 'Ss4sCoreBundle::base.html.twig' %}
+
+{% block title %}
+	{{ parent() }} Administrateurs 
+{% endblock %}
+
+{% block content %}
+	<div class="custom-module">
+		<div class="custom-module-header">
+			<div class="custom-mini-icon">
+				<span class="glyphicon glyphicon-plus"></span>
+			</div>
+			<h3>
+				Ajouter un Administrateur
+			</h3>
+		</div>
+		<div class="well">
+			<form role="form" class="form-horizontal" method="post" {{ form_enctype(form) }}>
+				{{ form_start(form) }}
+				<div class="form-group centered">
+					{{ form_label(form.username, 'Username de l\'administrateur', {'label_attr': {'class': 'col-sm-4 control-label'}}) }}
+					<div class="col-sm-6">
+						{{ form_errors(form.username) }}
+						{{ form_widget(form.username, {'attr': {'class': 'form-control ajax-finder'}}) }}
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="checkbox">
+						<div class="col-sm-offset-4 col-sm-6">
+							<div class="checkbox">
+								<label>
+								{{ form_errors(form.isSuperAdmin) }}
+								{{ form_widget(form.isSuperAdmin) }}
+								Super administrateur
+								</label>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-sm-offset-4 col-sm-6">
+						<input type="submit" class="btn btn-success">
+					</div>
+				</div>
+				{{ form_end(form) }}
+			</form>
+		</div>
+	</div>
+	<div class="custom-module">
+		<div class="custom-module-header">
+			<div class="custom-mini-icon">
+				<span class="glyphicon glyphicon-eye-open"></span>
+			</div>
+			<h3>
+				Liste des administrateurs
+			</h3>
+		</div>
+		{% if (administrators is defined and administrators|length > 0 ) %}
+		    <table class="table table-striped">
+		      <thead>
+		      <tr>
+		        <th>Username</th>
+		        <th>SuperAdministrateur</th>
+		        <th></th>
+		      </tr>
+		      </thead>
+		      <tbody>
+			      	{% for a in administrators %}
+			      		{% if app.security.getToken().getUser().getUsername() != a.username %}
+					        <tr>
+					          <td>{{ a.username }}</td>
+					          <td>
+					          	{% if a.isSuperAdmin %}
+					          		<span class="text-success">Oui</span>
+					          	{% else %}
+					          		<span class="text-danger">Non</span>
+					          	{% endif %}
+					          </td>
+					          <td class="custom-td-btns">
+					          		{% if is_granted('ROLE_SUPERADMIN') and a.isSuperAdmin == false %}
+					          		<a href="{{ path('ss4s_core_administrator_administrators_grant_super_admin', {'username': a.username }) }}">
+					          			<span class="glyphicon glyphicon-arrow-up custom-glyphicon-success"></span>
+					          			Droits super administrateur
+					          		</a>
+					          		{% endif %}
+					          		{% if is_granted('ROLE_FATHER_OF_ALL') and a.isSuperAdmin %}
+					          		<a href="{{ path('ss4s_core_administrator_administrators_revoke_super_admin', {'username': a.username }) }}"><span class="glyphicon glyphicon-arrow-down custom-glyphicon-warning"></span>Revoquer super administrateur</a>
+					          		{% endif %}
+					          		{% if (is_granted('ROLE_SUPERADMIN') and a.isSuperAdmin == false) or (is_granted('ROLE_FATHER_OF_ALL') and a.isSuperAdmin) %}
+					            	<a href="{{ path('ss4s_core_administrator_administrators_delete', {'username': a.username }) }}">
+					            		<span class="glyphicon glyphicon-remove custom-glyphicon-danger"></span>
+					            		Supprimer
+					            	</a>
+					          		{% endif %}
+					          </td>
+					        </tr>
+					    {% endif %}
+			        {% endfor %}
+		      </tbody>
+		    </table>
+		{% else %}
+			<div class="custom-inner">
+				<p>Aucun administrateur trouvé</p>
+			</div>
+		{% endif %}
+	</div>
+{% endblock %}
+
+{% block script %}
+	<script>
+		var xhr;
+		var $ajaxFinder = $('.ajax-finder');
+		var $ajaxResults = $('<ul class="ajax-results"></ul>');
+		var $ajaxLoader = $('<li class="loader"><img src="{{ asset('images/loader/ajax-loader.gif') }}" alt=""></li>');
+
+		jQuery(document).ready(function(){
+			var $remark = $('<p class="custom-notice"><span>Remarque</span> : Vous pouvez commencer à taper le nom et prénom de la personne recherchée si vous ne connaissez pas son username.</p>');
+			$('.form-horizontal').prepend($remark);
+			$('#ss4s_bundle_core_userbundle_administrator_username').focus();
+			$ajaxFinder.parent().append($ajaxResults);
+			$ajaxFinder.attr('autocomplete', 'off');
+			hideAjaxResults();
+			$ajaxFinder.bind({
+				keyup: function(e) {
+					showAjaxResults();
+					if(xhr != undefined)
+						xhr.abort();
+					getAjaxResults(e.target);
+				},
+				keydown: function(e) {
+					clearAjaxResults();
+				},
+				focus: function(e) {
+					showAjaxResults();
+				},
+				focusout: function(e) {
+					if(!$ajaxResults.is(':hover'))
+						hideAjaxResults();
+				}
+			});
+		});
+
+		function clearAjaxResults(){
+			$('.ajax-results').html($ajaxLoader);
+		}
+
+		function showAjaxResults(){
+			$('.ajax-results').fadeIn(250);
+		}
+
+		function hideAjaxResults(){
+			$('.ajax-results').fadeOut(250);
+		}
+
+		function getAjaxResults(search){
+			clearAjaxResults();
+			if(search.value.length > 1){
+				var data = [];
+				var request = '{{ path('ss4s_core_administrator_administrators_ajax_users_like', {'expression': 'PARAM' }) }}';
+				request = request.replace('PARAM', search.value);
+				xhr = $.getJSON(request , function(data){
+					clearAjaxResults();
+					$('.ajax-results').find('.loader').hide();
+					if(data != null){
+						for(var i = 0; i < data.length; i++){
+							resultString = data[i].fullname + ' (' + data[i].username + ')';
+							$result = $('<li class="result" data-username="' + data[i].username + '"">' + resultString  + '</li>');
+							$result.on('click', function(e){
+								$ajaxFinder.val(e.target.dataset.username);
+								clearAjaxResults();
+								hideAjaxResults();
+							});
+							$ajaxResults.append($result);
+						}
+					}
+				});
+			} else {
+				hideAjaxResults();
+			}				
+		}
+	</script>
+{% endblock %}

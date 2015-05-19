@@ -1,0 +1,5 @@
+{% if plugin_links is defined %}
+    {% for href, title in plugin_links %}
+        <li><a href="{{ href }}">{{ title }}</a></li>
+    {% endfor %}
+{% endif %}

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		{# Feel free to replace SS4S by anything you want #}
+		<title>SS4S{% if page_title is defined %} - {{ page_title }}{% endif %}</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+		{# TEMPORARY [LOSS OF MEMORY] !!! Trick to add the fonts via Assetic #}
+		{% stylesheets 
+			'@Ss4sCoreBundle/Resources/public/fonts/glyphicons-halflings-regular.ttf'
+			output='/fonts/glyphicons-halflings-regular.ttf'
+		%}{% endstylesheets %}
+		{% stylesheets 
+			'@Ss4sCoreBundle/Resources/public/fonts/glyphicons-halflings-regular.eot'
+			output='/fonts/glyphicons-halflings-regular.eot'
+		%}{% endstylesheets %}
+		{% stylesheets 
+			'@Ss4sCoreBundle/Resources/public/fonts/glyphicons-halflings-regular.woff'
+			output='/fonts/glyphicons-halflings-regular.woff'
+		%}{% endstylesheets %}
+		{% stylesheets 
+			'@Ss4sCoreBundle/Resources/public/fonts/glyphicons-halflings-regular.svg'
+			output='/fonts/glyphicons-halflings-regular.svg'
+		%}{% endstylesheets %}
+
+		{# The css we generated ends up in a file called style.css #}
+		{% stylesheets
+			'http://fonts.googleapis.com/css?family=Karla&#124;Anaheim'
+			'http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css'
+			'@Ss4sCoreBundle/Resources/public/css/*'
+			output='/css/style.css'
+		%}
+			<link rel="stylesheet" type="text/css" href="{{ asset_url }}" media="screen">
+		{% endstylesheets %}
+
+		{# Add your custom stylesheets in this block. #}
+		{% block stylesheets %}{% endblock %}
+
+		<link rel="icon" href="{{ asset('favicon.ico') }}" />
+	</head>
+	<body>
+		{% block body %}
+			{# Navigation #}
+			{% include 'Ss4sCoreBundle:Common:navBar.html.twig' %}
+
+			{# Content #}
+			<section class="container">
+				{# This block is right beneath the navbar in a container. It's a good place to display a title for example. #}
+				{% block header %}{% endblock %}
+
+				{# This is where the alerts you pass through any controller will be displayed. Four types are handled: success, error, warning and notice. #}
+				{% include 'Ss4sCoreBundle:Common:alerts.html.twig' %}
+
+				{# The content block will contain all the page content appart from scrips, page title and alerts. #}
+				{% block content %}{% endblock %}
+			</section>
+
+			{# Page Footer. #}
+			{% include 'Ss4sCoreBundle:Common:footer.html.twig' %}
+		{% endblock %}
+
+		{# App's mandatory javascript. #}
+		<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.23/angular.min.js"></script>
+		{% javascripts
+			'@Ss4sCoreBundle/Resources/public/js/*.js'
+			output='/js/scripts.js'
+		%}
+		<script type="text/javascript" src="{{ asset_url }}"></script>
+		{% endjavascripts %}
+
+		{# Optionnal Custom Javascript block for each page. #}
+		{% block script %}{% endblock %}
+	</body>
+</html>

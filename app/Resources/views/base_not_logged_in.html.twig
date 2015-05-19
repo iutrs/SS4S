@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>{% block title %}{% endblock %}</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ asset('../app/Resources/public/css/bootstrap.min.css') }}" media="screen">
+    <link rel="stylesheet" href="{{ asset('../app/Resources/public/css/custom.css') }}" media="screen">
+    <link rel="icon" href="{{ asset('../app/Resources/public/images/icon/favicon.ico') }}" />
+  </head>
+  <body>
+    <header class="navbar navbar-custom navbar-static-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="{{ path('Ss4sCoreHomeBundle_homepage') }}"><img src="{{ asset('../app/Resources/public/images/logo.png') }}" alt=""/></a>
+        </div>
+          <div class="collapse navbar-collapse">
+            <ul class="nav navbar-nav navbar-right">
+              <li><a href="{{ manager.server.loginUrl }}"><span class="custom-icon custom-icon-connect"></span>Connexion</a></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <section class="container">
+        {% block body %}{% endblock %}
+        <footer class="custom-footer">
+          <p>Application réalisée par Frédéric Schmitt, Antoine Haas et Simon Reiss.</p>
+        </footer>
+      </section>
+      <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+      <script src="{{ asset('../app/Resources/public/js/bootstrap.js') }}"></script>
+  </body>
+</html>

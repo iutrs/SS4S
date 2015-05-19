@@ -1,0 +1,34 @@
+{% extends 'Ss4sCoreBundle:Common:panel.html.twig' %}
+
+{% set panel_glyphicon = 'glyphicon-bullhorn' %}
+
+{% block panel_title %}
+    {% trans %}The Team{% endtrans %}
+{% endblock %}
+
+{% block panel_content %}
+    <div class="panel-body">
+        <div>
+            <h3>Emmanuel Blindauer</h3>
+            <p>Tuteur</p>
+        </div>
+        <div class="row">
+            <div class="col-lg-4">
+                <h3>Antoine Haas</h3>
+                <p>Programmeur</p>
+                <p>Testeur</p>
+            </div>
+            <div class="col-lg-4">
+                <h3>Simon Reiss</h3>
+                <p>Chef de projet</p>
+                <p>Programmeur</p>
+                <p>Graphiste</p>
+            </div>
+            <div class="col-lg-4">
+                <h3>Frédéric Schmitt</h3>
+                <p>Programmeur</p>
+                <p>Graphiste</p>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,142 @@
+#========================================================================#
+# SOMMAIRE 
+# - Routes de la partie administration
+#   - Routes de gestion des services
+#   - Routes de gestion des administrateurs
+#   - Routes des logs
+# - Routes de la partie utilisateur 
+# - Routes mixtes
+#========================================================================#
+
+#========================================================================#
+# ROUTES DE LA PARTIE ADMINISTRATION
+#========================================================================#
+
+#) Routes de gestion des services 
+
+## Page d'ajout de service 
+ss4s_core_administrator_services_add:
+    pattern: /administration/services/ajouter/
+    defaults: { _controller: Ss4sCoreBundle:Administrator\Services:add }
+
+## Page d'edition des informations d'un service
+ss4s_core_administrator_services_edit:
+    pattern: /administration/services/editer/{id}
+    defaults: { _controller: Ss4sCoreBundle:Administrator\Services:edit }
+    requirements:
+        id: \d+
+
+## Page d'edition des paramètres d'un service
+ss4s_core_administrator_services_parameters:
+    pattern: /administration/services/parameters/{id}
+    defaults: { _controller: Ss4sCoreBundle:Administrator\Services:editParameters }
+    requirements:
+        id: \d+
+
+## Suppression de service 
+ss4s_core_administrator_services_delete:
+    pattern: /administration/services/supprimer/{id}
+    defaults: { _controller: Ss4sCoreBundle:Administrator\Services:delete }
+    requirements:
+        id: \d+
+
+## Activation d'un service 
+ss4s_core_administrator_services_enable:
+    pattern: /administration/services/activer/{id}
+    defaults: { _controller: Ss4sCoreBundle:Administrator\Services:enable }
+    requirements:
+        id: \d+
+
+## Mise en développement d'un service 
+ss4s_core_administrator_services_disable:
+    pattern: /administration/services/desactiver/{id}
+    defaults: { _controller: Ss4sCoreBundle:Administrator\Services:disable }
+    requirements:
+        id: \d+
+
+#) Routes de gestion des administrateurs 
+
+## Liste des administrateurs et ajout
+ss4s_core_administrator_administrators_index:
+    pattern: /administration/administrateurs/
+    defaults: { _controller: Ss4sCoreBundle:Administrator\Administrators:index }
+
+## Accorder droits Super Admin
+ss4s_core_administrator_administrators_grant_super_admin:
+    pattern: /administration/administrateurs/accorder_super_admin/{username}
+    defaults: { _controller: Ss4sCoreBundle:Administrator\Administrators:grantSuperAdministrator }
+
+## Revoquer les droits de Super Admin
+ss4s_core_administrator_administrators_revoke_super_admin:
+    pattern: /administration/administrateurs/revoquer_super_admin/{username}
+    defaults: { _controller: Ss4sCoreBundle:Administrator\Administrators:revokeSuperAdministrator }
+
+## Supprimer Administrateur
+ss4s_core_administrator_administrators_delete:
+    pattern: /administration/administrateurs/supprimer/{username}
+    defaults: { _controller: Ss4sCoreBundle:Administrator\Administrators:delete }
+
+## Ajax recherche
+ss4s_core_administrator_administrators_ajax_users_like:
+    pattern: /administration/administrateurs/ajax_list/{expression}
+    defaults: { _controller: Ss4sCoreBundle:Administrator\Administrators:getAjaxUsersLike }
+
+#) Routes des logs
+
+## Page d'acceuil des logs
+ss4s_core_administrator_logs_index:
+   pattern: /administration/logs/
+   defaults: { _controller: Ss4sCoreBundle:Administrator\Logs:index }
+
+
+#========================================================================#
+# ROUTES DE LA PARTIE UTILISATEUR
+#========================================================================#
+
+# Route vers la documentation
+ss4s_core_user_documentation_index:
+    pattern: /documentation/
+    defaults: { _controller: Ss4sCoreBundle:User\Documentation:index }
+
+# Route vers le profil de l'user en actuel
+ss4s_core_user_profil_index:
+    pattern: /profil/
+    defaults: { _controller: Ss4sCoreBundle:User\Profil:index }
+
+# Route vers les credits 
+ss4s_core_user_credits: 
+    pattern: /credits/
+    defaults: { _controller: Ss4sCoreBundle:User\About:credits }
+
+# Route vers les mentions légales
+ss4s_core_user_legal: 
+    pattern: /mentions_legales/
+    defaults: { _controller: Ss4sCoreBundle:User\About:legal }
+
+# **** IMPORTANT : NE PAS ENLEVER ! **** Route de login pour régler le bug du /login 
+ss4s_core_user_services_login:
+    pattern:  /login
+    defaults: { _controller: Ss4sCoreBundle:User\Services:index }
+
+#========================================================================#
+# ROUTES MIXTES 
+#========================================================================#
+
+# Route de redirection pour avoir "services" dans l'url
+ss4s_core_user_services_redirectIndex:
+    pattern: /
+    defaults: { _controller: Ss4sCoreBundle:User\Services:redirectIndex }
+
+# Route vers la page d'accueil des services
+ss4s_core_user_services_index:
+    pattern:  /services/
+    defaults: { _controller: Ss4sCoreBundle:User\Services:index }
+
+#========================================================================#
+# JSON
+#========================================================================#
+
+# Get all allowed services for the user
+ss4s_core_user_services_get_all_json:
+    pattern: /json/services/get_all/
+    defaults: { _controller: Ss4sCoreBundle:User\Services:getAllJson }

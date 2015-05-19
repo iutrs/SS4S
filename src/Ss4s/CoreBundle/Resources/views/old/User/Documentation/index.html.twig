@@ -1,0 +1,45 @@
+{% extends '::base.html.twig' %}
+
+{% block title %}
+	{{ parent() }} Documentation
+{% endblock %}
+
+{% block stylesheets %}
+	<link rel="stylesheet" href="{{ asset('bundles/ss4score/css/documentation.css') }}" media="screen">
+{% endblock %}
+
+
+{% block content %}
+	<div class="custom-module">
+		<div class="custom-module-header">
+			<div class="custom-mini-icon">
+				<span class="glyphicon glyphicon-book"></span>
+			</div>
+			<h3>
+				Documentation
+			</h3>
+		</div>
+
+		<ul class="nav nav-tabs" id="custom-doc-tab" data-target="custom-doc-tab-content">
+      		<li class="active"><a href="#gene" data-toggle="tab">Général</a></li>
+      		<li><a href="#serv" data-toggle="tab">Services</a></li>
+      		{% if is_granted('ROLE_ADMIN') %} 
+      		<li><a href="#admin" data-toggle="tab">Administrateur</a></li>
+      		{% endif %}
+    	</ul>
+
+    	<div class="tab-content" id="custom-doc-tab-content">
+        	<div class="tab-pane fade active in" id="gene">
+        		{% include 'Ss4sCoreBundle:User/Documentation:docuser.html.twig' %}
+        	</div>
+        	<div class="tab-pane fade" id="serv">
+        		{% include 'Ss4sCoreBundle:User/Documentation:docserv.html.twig' %}
+        	</div>
+        	{% if is_granted('ROLE_ADMIN') %}
+        	<div class="tab-pane fade" id="admin">
+				{% include 'Ss4sCoreBundle:User/Documentation:docadmin.html.twig' %} 
+			</div>
+			{% endif %}
+		</div>	
+	</div>
+{% endblock %}

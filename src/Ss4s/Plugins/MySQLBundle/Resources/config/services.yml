@@ -1,0 +1,6 @@
+parameters:
+    ss4s_plugins_my_sql.mysql_service.class: Ss4s\Plugins\MySQLBundle\Service\MySqlService
+
+services:
+    ss4s_plugins_my_sql.mysql_service:
+        class: "%ss4s_plugins_my_sql.mysql_service.class%"

@@ -1,0 +1,16 @@
+{% if app.user %}
+    <li class="logged-in-as-ss4s">
+        <p class="navbar-text">
+{#             {% trans %}Logged in as{% endtrans %}<a href="{{ path( 'ss4s_core_user_profile' ) }}">
+            {% if app.user.fullname is defined %}
+                {{ app.user.fullname }}
+            {% else %}
+                {{ app.user.username }}
+            {% endif %} #}
+            </a>
+        </p>
+    </li>
+    <li class="btn-logout-ss4s">
+        {# <a href="{{ path('logout') }}">Logout <span class="glyphicon glyphicon-log-out"></span></a> #}
+    </li>
+{% endif %}
